@@ -1,0 +1,142 @@
+📖 Concepts & Explanations
+Term/Function                        	Meaning
+
+cv2.VideoCapture(0)	                   Opens your laptop’s default camera
+
+mediapipe.solutions.hands.Hands()	   Initializes the hand detection model
+
+max_num_hands=1	                       Detect only one hand (to simplify logic)
+
+cv2.cvtColor()	                       Converts BGR (default OpenCV format) to RGB (needed by MediaPipe)
+
+result.multi_hand_landmarks          	Gives you 21 key landmark points on each hand
+
+mp_draw.draw_landmarks()	            Draws hand connections on your image
+
+
+
+
+
+Q. What is MediaPipe?
+MediaPipe is a machine learning framework by Google used for:
+
+Hand detection
+
+Face detection
+
+Pose estimation
+
+Object detection
+
+
+
+
+
+
+
+Q. What is OpenCV?
+OpenCV (Open Source Computer Vision Library):
+
+Used for working with images/videos
+
+Captures, edits, processes frames from your webcam
+
+We use it to display frames, draw on images, crop, convert formats, etc.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Key Concepts Used in main.py:
+
+Concept	                                                      Description
+
+Webcam Capture	                                         Using OpenCV (cv2.VideoCapture) to access your camera feed.
+RGB Conversion	                                       Convert BGR (OpenCV default) to RGB (MediaPipe input) using cv2.cvtColor().
+Hand Landmark Detection                              	MediaPipe's hand detection model detects key points on the hand, with 21 landmarks.
+Drawing Landmarks	                                    Using mp_draw.draw_landmarks() to visualize the detected points and connections.
+Real-time Processing	                               The program works in a loop to process frames continuously, providing real-time results.
+
+
+
+
+
+
+
+1. Identify Key Finger Landmarks:
+Each finger has 4 key landmarks, with the tip being the most crucial for detecting if a finger is raised. The finger's landmarks for each hand are as follows:
+
+Thumb: 1, 2, 3, 4
+
+Index: 5, 6, 7, 8
+
+Middle: 9, 10, 11, 12
+
+Ring: 13, 14, 15, 16
+
+Pinky: 17, 18, 19, 20
+
+We'll focus on the tip of each finger and compare it to the middle landmark of each finger.
+
+
+
+2. Determine if a Finger is Raised:
+To determine if a finger is raised, we check the following condition:
+
+For each finger, the tip landmark should be above the middle landmark (when the hand is open and fingers are raised). This means the y-coordinate of the tip landmark is smaller than the y-coordinate of the middle landmark.
+
+If the tip is above the middle (in terms of the y-axis), we can consider that the finger is raised.
+
+
+
+
+
+Explanation of the Code Changes:
+1. count_fingers() Function:
+This function counts the number of raised fingers.
+
+We use the finger tips and middle joints of each finger to determine if a finger is raised.
+
+For the thumb, we use its x-axis position instead of the y-axis to determine if it’s raised (because the thumb is oriented differently).
+
+2. Integration with the Main Loop:
+The count_fingers() function is called within the main loop, passing the detected landmarks.
+
+The result (the number of raised fingers) is displayed on the screen using cv2.putText().
+
+3. Displaying the Result:
+The number of raised fingers is shown in the top-left corner of the window (Raised Fingers: <count>).
+
+
+
+
+
+
+
+
+
+
+Mapping Raised Fingers to Operations:
+Let’s define simple operations for different finger counts:
+
+1 Finger = Addition (+)
+
+2 Fingers = Subtraction (-)
+
+3 Fingers = Multiplication (*)
+
+4 Fingers = Division (/)
+
+2. Add Number Inputs:
+We need to handle two numbers for each operation, so we will add a way to capture input numbers (e.g., by detecting gestures or using keys).
